@@ -64,7 +64,7 @@
                     <form id="questionform" action="point to a submit view" method="post">
                         {% for question in course.question_set.all %}
                         <div class="card mt-1">
-                            <div class="card-header"><h5>{{ question.text}}</h5></div>
+                            <div class="card-header"><h5>{{ question.question }}</h5></div>
                             {% csrf_token %}
                             <div class="form-group">
                                {% for choice in question.choice_set.all %}
