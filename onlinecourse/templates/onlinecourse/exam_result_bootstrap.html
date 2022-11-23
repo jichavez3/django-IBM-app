@@ -55,26 +55,19 @@
             <!--HINT Display exam results-->
             {% for question in course.question_set.all %}
             <div class="card mt-1">
-                <div class="card-header">
-                    <h5>{{ question.question }}</h5>
-                </div>
-                {% csrf_token %}
+                <div class="card-header"><h5>{{ question.content }}</h5></div>
                 <div class="form-group">
                     {% for choice in question.choice_set.all %}
                     <div class="form-check">
-                        {% if choice in submitted_choices and choice.is_correct %}
-                        <label class="form-check-label text-success">
-                            Correct answer: {{ choice.choice_text }}
-                        </label>
-                        {% elif choice in submitted_choices and not choice.is_correct %}
-                        <label class="form-check-label text-danger">
-                            Incorrect answer: {{ choice.choice_text }}
-                        </label>
-                        {% elif choice not in submitted_choices and choice.is_correct %}
-                        <label class="form-check-label text-warning">
-                            Not selected: {{ choice.choice_text }}
-                        </label>
-                        {% endif %}
+                        {% if choice.is_correct and choice in choices %}
+                        <div class="text-success">Correct answer: {{ choice.content }}</div>
+                        {% else %}{% if choice.is_correct and not choice in choices %}
+                        <div class="text-warning">Not selected: {{ choice.content }}</div>
+                        {% else %}{% if not choice.is_correct and choice in choices %}
+                        <div class="text-danger">Wrong answer: {{ choice.content }}</div>
+                        {% else %}
+                        <div>{{ choice.content }}</div>
+                        {% endif %}{% endif %}{% endif %}
                     </div>
                     {% endfor %}
                 </div>
@@ -82,5 +75,5 @@
             {% endfor %}
         </div>
     </div>
-</body>
-</html>
+    </body>
+ </html>
